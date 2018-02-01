@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+      <title>Emails</title>
+    </head>
+    <body>
+      <div id = 'wrapper'>
+        
+          {% with messages = get_flashed_messages(with_categories=true) %}
+           {% if messages %}
+            {% for category, message in messages %}
+                <div id="{{ category }}">{{ message }}</div>
+            {% endfor %}
+           {% endif %}
+           {% endwith %}
+          <table>
+            <tr>
+              <th>Users</th>
+            </tr>
+              {% for users in all_users %}
+                <tr>
+                  <td>{{users['first_name']}}</td>
+                  <td>{{users['last_name']}}</td>
+                  <td>{{users['email']}}</td>
+                  <td>{{users['password']}}</td>
+                  <td>{{users['created_at']}}</td>
+                </tr>
+              {% endfor %}
+          </table>
+          
+         
+
+        
+
+      </div>
+    </body>
+</html>

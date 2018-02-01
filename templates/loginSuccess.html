@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+      <title>Emails</title>
+    </head>
+    <body>
+      <div id = 'wrapper'>
+        
+          {% with messages = get_flashed_messages(with_categories=true) %}
+           {% if messages %}
+            {% for category, message in messages %}
+                <div id="{{ category }}">{{ message }}</div>
+            {% endfor %}
+           {% endif %}
+           {% endwith %}
+            You DO exist!
+         
+
+        
+
+      </div>
+    </body>
+</html>

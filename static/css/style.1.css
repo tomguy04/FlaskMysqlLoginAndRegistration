@@ -1,0 +1,62 @@
+*{
+    margin:0px;
+    padding:0px;
+}
+
+#wrapper{
+    width: 500px;
+    margin: 0px auto;
+    /* outline: solid 2px black; */
+}
+
+#flashErrorMessages{
+    background-color: yellow;
+    color: red;
+}
+
+
+#flashNoErrorMessages{
+    background-color: green;
+    width: 200px;
+}
+
+td{
+    border: solid 2px black;
+}
+
+th{
+    text-align: left;
+    background-color: gray;
+}
+
+tr:nth-child(even) {background-color: lightblue;}
+
+#fields{
+    /* margin-left: 10px; */
+    display: inline-block;
+    vertical-align: top;
+    background-color: red;
+    width: 150px;
+}
+
+.values{
+    display: inline-block; 
+    padding:1px;
+    background-color:green;
+    width: 250px;
+    vertical-align: top;
+}
+
+select{
+    width: 200px;
+}
+
+input{
+    background-color: gray;
+    color: white;
+    width: 200px;
+}   
+
+
+
+

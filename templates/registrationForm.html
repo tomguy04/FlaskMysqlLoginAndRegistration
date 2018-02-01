@@ -1,0 +1,46 @@
+<!-- # "/process": the route your form should submit to. 
+    In your process function, print the user's name and redirect to root. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- link the flask way -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- <script type="text/javascript" src="{{ url_for('static', filename='js/myjs.js') }}"></script> -->
+    <title>Document</title>
+</head>
+    <body>
+        <div id="wrapper">
+            <div>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                 {% if messages %}
+                    {% for category, message in messages %}
+                        <div id="{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                 {% endif %}
+                {% endwith %}
+            </div>
+            
+            <form action='/process' method='post'>
+                <div id='fields'>
+                    <p>First Name:</p>
+                    <p>Last Name: </p>
+                    <p>Email:</p>
+                    <p>Password:</p>
+                    <p>Password Confirmation</p>
+                </div>
+                <div class='values'>
+                    <p><input type='text' name='firstname'></p>
+                    <p><input type='text' name='lastname'></p>
+                    <p><input type='text' name='email'></p>
+                    <p><input type='text' name='password'></p>
+                    <p><input type='text' name='confpassword'></p>
+                </div>
+                <input type='submit' value='Submit'>
+            </form>
+        </div>
+    </body>
+</html>
