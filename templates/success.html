@@ -17,15 +17,19 @@
             <tr>
               <th>Users</th>
             </tr>
-              {% for users in all_users %}
-                <tr>
-                  <td>{{users['first_name']}}</td>
-                  <td>{{users['last_name']}}</td>
-                  <td>{{users['email']}}</td>
-                  <td>{{users['password']}}</td>
-                  <td>{{users['created_at']}}</td>
-                </tr>
-              {% endfor %}
+            {% if 'uid' in session.keys() %}
+            <!-- if uid in session -->
+             Welcome, user with session *{{session['uid']}}** Name= 
+            {% endif %}
+            {% for users in all_users %}
+              <tr>
+                <td>{{users['first_name']}}</td>
+                <td>{{users['last_name']}}</td>
+                <td>{{users['email']}}</td>
+                <td>{{users['password']}}</td>
+                <td>{{users['created_at']}}</td>
+              </tr>
+            {% endfor %}
           </table>
           
          

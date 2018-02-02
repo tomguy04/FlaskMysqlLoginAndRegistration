@@ -23,7 +23,8 @@
                  {% endif %}
                 {% endwith %}
             </div>
-            
+            --REGISTER--
+            <!-- REGISTRATION -->
             <form action='/process' method='post'>
                 <div id='fields'>
                     <p>First Name:</p>
@@ -41,6 +42,22 @@
                 </div>
                 <input type='submit' value='Submit'>
             </form>
+            <HR>
+
+            <!-- LOGIN -->
+            --OR LOGIN---
+            <form action="/login" method="POST">
+                <div id='fields'>
+                    <P>email:</P>    
+                    <P>password:</P>  
+                </div>
+                <div class='values'>
+                    <input type="text" name="email" placeholder="email">
+                    <input type="password" name="password" placeholder="password">
+                    <input type="submit" name="">
+                </div>
+            </form>
+
         </div>
     </body>
 </html>

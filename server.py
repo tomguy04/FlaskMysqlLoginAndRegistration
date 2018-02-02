@@ -2,6 +2,7 @@ from flask import Flask, request, redirect, render_template, session, flash
 from mysqlconnection import MySQLConnector
 from datetime import datetime
 import re
+import md5
 app = Flask(__name__)
 app.secret_key = "ThisIsSecret!"
 mysql = MySQLConnector(app,'dbloginregistration')
@@ -42,7 +43,7 @@ def process():
   # 5. Password Confirmation - matches password
 
   if not request.form['firstname'] or not request.form['lastname'] or not request.form['email'] or not request.form['password'] :
-    flash(u"YOU SUCK!",'flashErrorMessages')
+    flash(u"You have not entered all the required data",'flashErrorMessages')
     return redirect('/') 
   else:
     if len(request.form['firstname']) < 2 or len(request.form['lastname']) < 2 or len(request.form['firstname']) < 2:# or len(lname) < 1 or len (session['pw']) < 1 or len(confPw) < 1 :
@@ -51,6 +52,9 @@ def process():
       flash(u"3. Email - Valid Email format, and that it was submitted",'flashErrorMessages')
       flash(u"4. Password - at least 8 characters, and that it was submitted",'flashErrorMessages')
       flash(u"5. Password Confirmation - matches password",'flashErrorMessages')
+      return redirect('/') 
+    elif not request.form['firstname'].isalpha() or not request.form['lastname'].isalpha() :
+      flash(u"first and last name must contain only alpha letters",'flashErrorMessages')
       return redirect('/') 
     elif not EMAIL_REGEX.match(request.form['email']):
       flash(u"1. First Name - letters only, at least 2 characters",'flashErrorMessages')
@@ -79,28 +83,74 @@ def process():
                 'fname': request.form['firstname'],
                 'lname': request.form['lastname'],
                 'email': request.form['email'],
-                'pw' : request.form['password']
+                'pw' : md5.new(request.form['password']).hexdigest()
             }
-
-      mysql.query_db(query, data)
-
+     
+      new_user = mysql.query_db(query, data) #when there is an insert, we get back the id of the row inserted to.
+      session['uid']=new_user #this means we have a logged in user.
       myUsers = mysql.query_db("SELECT * FROM tblusers")
-      # return render_template('success.html', all_users=myUsers)
-      return redirect('/loginCheck')
+      return redirect('/dashboard')
 
-@app.route('/login', methods=['GET'])
+@app.route('/dashboard') # this is the success of a register!
+def dashboard():
+  query = "SELECT * FROM tblusers WHERE id = :user_id" #being able to show this dashboard means there is an active session, someone is logged in.
+  data = {
+          "user_id":session["uid"]
+      }   
+  user = mysql.query_db(query, data) #when there is a select, we get back a list of dictionaries converted from the rows of data selected.
+  print user
+  return render_template("dashboard.html", user = user[0]) 
+  #when dashboard.html access user.first_name, it's from user.  
+  #USER from mysql.query_db(query, data) IS an list of one dictionary. user[0] is a dictioary.
+  #[{u'first_name': u'Tom', u'last_name': u'Jones', u'created_at': datetime.datetime(2018, 2, 1, 17, 48, 40), 
+  # u'updated_at': datetime.datetime(2018, 2, 1, 17, 48,40), u'email': u'1@1.com', u'password': u'123456789H', u'id': 31L}]
+
+@app.route("/login", methods=["POST"])
 def login():
-  return  render_template('loginForm.html')
+	query = "SELECT * FROM tblusers WHERE email = :post_email"
+	data = {
+		"post_email":request.form["email"]
+	}
+	user = mysql.query_db(query, data) # []
+	print user
 
-@app.route('/loginCheck', methods=['POST'])
-def loginCheck():
-  myemail = request.form['email']
-  mypassword = request.form['password']
-  users = mysql.query_db("SELECT * FROM tblusers")
-  for row in users:
-    if row['email'] == myemail and row['password'] == mypassword:
-      return render_template('loginSuccess.html')
-    else:
-      return redirect('/login')
+	
+
+	if len(user) > 0:
+		user = user[0]
+		if user["password"] ==  md5.new(request.form['password']).hexdigest():
+			session["uid"] = user["id"]
+			return redirect("/dashboard")
+	flash("Email and password not found")
+	return redirect("/")
+
+	# 	else:
+	# 		flash("Incorrect Password")
+	# 		return redirect("/")
+	# else:
+	# 	flash("No email found")
+# 	return redirect("/")
+
+#fresh login method one
+# @app.route('/login', methods=['GET'])
+# def login():
+#   return  render_template('loginForm.html')
+
+# ANOTHER WAY TO CHECK THE  LOGIN DATA
+#  @app.route('/loginCheck', methods=['POST'])
+# def loginCheck():
+#   myemail = request.form['email']
+#   mypassword = request.form['password']
+#   users = mysql.query_db("SELECT * FROM tblusers")
+#   for row in users:
+#     if row['email'] == myemail and row['password'] == mypassword:
+#       return render_template('loginSuccess.html')
+#     else:
+#       return redirect('/login')
+
+@app.route("/logout")
+def logout():
+  session.clear()
+  return redirect("/")
 app.run(debug=True) # run our server
 
