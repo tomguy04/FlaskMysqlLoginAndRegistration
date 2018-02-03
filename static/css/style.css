@@ -4,10 +4,8 @@
 }
 
 #wrapper{
-    width: 500px;
+    width: 1000px;
     margin: 0px auto;
-    outline: solid 2px black;
-    background-color: blue;
 }
 
 #flashErrorMessages{
@@ -19,49 +17,5 @@
 #flashNoErrorMessages{
     background-color: white;
 }
-
-#fields{
-    /* margin-left: 10px; */
-    display: inline-block;
-    vertical-align: top;
-    background-color: white;
-    width: 200px;
-}
-
-.values{
-    display: inline-block; 
-    padding:1px;
-    background-color:green;
-    width: 250px;
-    vertical-align: top;
-}
-
-select{
-    width: 200px;
-}
-
-/* h1{
-    color:red;
-} */
-
-input{
-    background-color: white;
-    color: gray;
-    width: 200px;
-}   
-
-
-#glen{
-    width: 500px;
-    height: 200px;
-    margin: 0px auto;
-    outline: solid 2px black;
-    background-color: blue;
-}
-/* 
-p{
-    text-align:left;
-} */
-
 
 
